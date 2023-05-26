@@ -4,9 +4,9 @@ A module that acts as the controller for system sales.
 """
   use ErpWeb, :controller
 
-    @doc """
-  Process a singular sale of a bike.
-  """
+  
+  # Process a singular sale of a bike.
+  
 def process_sale(conn, %{"sale" => sale_params}) do
   # Retrieve the current user from the connection using Guardian authentication
   user = Guardian.Plug.current_resource(conn)
