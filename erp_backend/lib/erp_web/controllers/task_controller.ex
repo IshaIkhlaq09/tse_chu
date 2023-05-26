@@ -3,15 +3,17 @@ defmodule ErpWeb.TaskController do
 
   alias Erp.Planning
   alias Erp.Planning.Task
-
+  
+# Create a new task
   def new(conn, %{"task" => task_params}) do
     user = Guardian.Plug.current_resource(conn)
     case Planning.add_task(task_params, user) do
           {:ok} ->
             tasks = Erp.Planning.list_tasks()
-            render(conn, "index.json", tasks: tasks)
+            render(conn, "index.json", tasks: tasks) # Render the "index.json" template with the updated list of tasks
+    {:error, error} ->
           {:error, error} ->
-            {:error, error}
+            {:error, error} # Return the error if adding the task was unsuccessful
     end
   end
 
@@ -25,28 +27,26 @@ defmodule ErpWeb.TaskController do
     render(conn, "index.json", tasks: tasks)
   end
 
-  def update_task(conn, %{"task" => task_params}) do
-
-    task = Planning.get_task!(task_params["id"])
-
-    case Planning.update_task(task, task_params) do
-      {:ok} ->
-        tasks = Erp.Planning.list_tasks()
-        render(conn, "index.json", tasks: tasks)
-      {:error, error} ->
-        {:error, error}
-    end
+  # Update a task
+def update_task(conn, %{"task" => task_params}) do
+  task = Planning.get_task!(task_params["id"])  # Retrieve the task based on the provided task ID
+  case Planning.update_task(task, task_params) do
+    {:ok} ->
+      tasks = Erp.Planning.list_tasks()  # Retrieve the updated list of tasks
+      render(conn, "index.json", tasks: tasks)  # Render the "index.json" template with the updated list of tasks
+    {:error, error} ->
+      {:error, error}  # Return the error if updating the task was unsuccessful
   end
+end
 
-  def delete(conn, %{"taskID" => id}) do
-    task = Planning.get_task!(id)
-    case Planning.delete_task(task) do
-      {:ok} ->
-        tasks = Erp.Planning.list_tasks()
-        render(conn, "index.json", tasks: tasks)
-      {:error, error} ->
-        {:error, error}
-    end
-
+  # Delete a task
+def delete(conn, %{"taskID" => id}) do
+  task = Planning.get_task!(id)  # Retrieve the task based on the provided task ID
+  case Planning.delete_task(task) do
+    {:ok} ->
+      tasks = Erp.Planning.list_tasks()  # Retrieve the updated list of tasks
+      render(conn, "index.json", tasks: tasks)  # Render the "index.json" template with the updated list of tasks
+    {:error, error} ->
+      {:error, error}  # Return the error if deleting the task was unsuccessful
   end
 end
