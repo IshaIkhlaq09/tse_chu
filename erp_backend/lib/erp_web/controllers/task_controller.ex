@@ -46,6 +46,12 @@ def update_task(conn, %{"task" => task_params}) do
   end
 end
 
+ @doc """
+ This function handles the deletion of a task. It takes a connection (conn) and a map containing the task ID (%{"taskID" => id}).
+ The task with the given ID is retrieved using Planning.get_task!/1.
+ The ! indicates that an exception will be raised if the task with the given ID is not found.
+ """
+ 
   # Delete a task
 def delete(conn, %{"taskID" => id}) do
   task = Planning.get_task!(id)  # Retrieve the task based on the provided task ID
