@@ -4,6 +4,13 @@ defmodule ErpWeb.TaskController do
   alias Erp.Planning
   alias Erp.Planning.Task
   
+  @doc """
+  this function receives a connection (conn) and a map containing a "task" key with associated task_params. 
+  It then retrieves the current user from the connection using Guardian authentication. 
+  The add_task/2 function from the Planning module is called with task_params and user as arguments. 
+  Depending on the result, either a list of tasks is rendered using the "index.json" template or an error tuple is returned.
+  """
+  
 # Create a new task
   def new(conn, %{"task" => task_params}) do
     user = Guardian.Plug.current_resource(conn)
